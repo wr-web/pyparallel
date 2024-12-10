@@ -929,6 +929,7 @@ _parse_off_t(PyObject* arg, void* addr)
 }
 #endif
 
+#if 0
 #if defined _MSC_VER && _MSC_VER >= 1400
 /* Microsoft CRT in VS2005 and higher will verify that a filehandle is
  * valid and raise an assertion if it isn't.
@@ -1020,6 +1021,23 @@ _PyVerify_fd_dup2(int fd1, int fd2)
 #else
 /* dummy version. _PyVerify_fd() is already defined in fileobject.h */
 #define _PyVerify_fd_dup2(A, B) (1)
+#endif
+#else /* if 0 */
+/* Stub versions for Windows to bypass the need for __pioinfo */
+
+int
+_PyVerify_fd(int fd)
+{
+    /* Always return valid. This bypasses the actual fd validation. */
+    return 1;
+}
+
+int
+_PyVerify_fd_dup2(int fd1, int fd2)
+{
+    /* Always return valid for dup2 checks. */
+    return 1;
+}
 #endif
 
 #ifdef MS_WINDOWS

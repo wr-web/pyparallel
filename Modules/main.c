@@ -504,9 +504,16 @@ Py_Main(int argc, wchar_t **argv)
             Py_FatalError(
                "not enough memory to copy PYTHONWARNINGS");
         wcscpy(buf, wp);
+#ifdef _WIN32
+        wchar_t *context = NULL;  // Windows-specific context variable
+        for (warning = wcstok(buf, L",", &context);
+             warning != NULL;
+             warning = wcstok(NULL, L",", &context)) {
+#else
         for (warning = wcstok(buf, L",");
              warning != NULL;
              warning = wcstok(NULL, L",")) {
+#endif
             PySys_AddWarnOption(warning);
         }
         free(buf);

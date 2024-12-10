@@ -7,6 +7,12 @@
 
 #include <time.h>
 
+#ifdef _WIN32
+#define timezone _timezone
+#define daylight _daylight
+#define tzname _tzname
+#endif
+
 /* Differentiate between building the core module and building extension
  * modules.
  */
